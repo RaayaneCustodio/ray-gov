@@ -1,20 +1,21 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
-// Defina uma expressão regular para corresponder a rotas privadas
-const privateRouteRegex = /^\/dashboard(\/.*)?$/;
-
+const isPrivateRoute = createRouteMatcher([
+    "/dashboard(.*)"
+])
+ 
 export default clerkMiddleware((auth, req) => {
-    // Verifique se a rota é privada
-    if (privateRouteRegex.test(req.url)){
-        // Proteja a rota
-        auth().protect();
+    if (isPrivateRoute(req)){
+        auth().protect()
     }
-});
+    
+}) ;
+
 
 export const config = {
-    matcher: [
-        '/((?!.*\\..*|_next).*)',
-        '/',
-        '/(api|trpc)(.*)'
-    ],
+  matcher: [
+    '/((?!.*\\..*|_next).*)',
+    '/',
+    '/(api|trpc)(.*)'
+],
 };
