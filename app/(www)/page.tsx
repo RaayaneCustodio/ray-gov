@@ -8,7 +8,7 @@ export default function Home() {
     
     <main className="h-screen flex flex-col items-center justify-center">
       <div>
-          <h1>Postagens.</h1>
+          <h1>Postagens</h1>
       </div>
       <div className="mt-4 w-full flex justify-center"> 
         <MyCarousel />

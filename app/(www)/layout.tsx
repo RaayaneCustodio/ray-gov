@@ -10,7 +10,7 @@ interface DashboardLayoutProps {
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
 	return (
-		<div className="w-full  mx-auto  ">
+		<div className="w-full  mx-auto">
 			<Header />
 			<div>
 				{children}
