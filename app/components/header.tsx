@@ -9,21 +9,31 @@ export function Header() {
   };
 
   return (
-    <header className="flex justify-between items-center h-16 mb-10 border-b mt-8 bg-[#1a202c] p-6 shadow-lg">
-      <div>
-        <Link href="/" className="block"><Logo /></Link>
+    <header className="navbar navbar-expand-lg navbar-dark bg-[#1a202c] shadow-lg">
+      <div className="container-fluid">
+        <Link href="/" className="navbar-brand"><Logo /></Link>
+        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+            <li className="nav-item">
+              <Link href="/" className="nav-link" style={linkStyle}>Inicio</Link>
+            </li>
+            <li className="nav-item">
+              <Link href="/" className="nav-link" style={linkStyle}>Postagens</Link>
+            </li>
+          </ul>
+          <ul className="navbar-nav">
+            <li className="nav-item">
+              <Link href="/dashboard" className="nav-link" style={linkStyle}>Logar</Link>
+            </li>
+            <li className="nav-item">
+              <Link href="/sign-up" className="nav-link" style={linkStyle}>Cadastrar</Link>
+            </li>
+          </ul>
+        </div>
       </div>
-      <ul className="flex justify-between items-center gap-6">
-        <li><Link href="/" style={linkStyle}>Inicio</Link></li>
-        <li><Link href="/" style={linkStyle}>Postagens</Link></li>
-        <li><Link href="/" style={linkStyle}></Link></li>
-      </ul>
-      <ul className="flex justify-between items-center gap-6">
-        <li><Link href="/dashboard" style={linkStyle}>Logar</Link></li>
-        <li><Link href="/sign-up" style={linkStyle}>Cadastrar</Link></li>
-        <li><Link href="/" style={linkStyle}></Link></li>
-      </ul>
-      {/* <UserButton /> */}
     </header>
-  )
+  );
 }
