@@ -1,4 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
+
 import Link from "next/link";
 import { Logo } from "./svgs/logo.";
 
@@ -15,7 +16,7 @@ export function Header() {
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
         </button>
-        <div className="collapse navbar-collapse" id="navbarNav">
+        <div className="navbar-nav" id="navbarNav">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
               <Link href="/" className="nav-link" style={linkStyle}>Inicio</Link>

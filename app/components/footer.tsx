@@ -22,10 +22,10 @@ export function Footer() {
               <a href="#" style={linkStyle} className="hover:underline me-4 md:me-6">Postagens</a>
             </li>
             <li>
-              <a href="#" style={linkStyle} className="hover:underline me-4 md:me-6">Logar</a>
+              <a href="/dashboard" style={linkStyle} className="hover:underline me-4 md:me-6">Logar</a>
             </li>
             <li>
-              <a href="#" style={linkStyle} className="hover:underline">Cadastrar</a>
+              <a href="/sign-up" style={linkStyle} className="hover:underline">Cadastrar</a>
             </li>
           </ul>
         </div>
