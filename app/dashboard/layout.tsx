@@ -9,8 +9,8 @@ interface DashboardLayoutProps {
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
     return (
-        <div className="h-full flex">
-            <div className="w-full max-w-96 border-r bg-slate-100">
+        <div className="h-full flex flex-col md:flex-row">
+            <div className="w-full md:max-w-96 border-r bg-slate-100">
                 <div className="p-6">
                     <Logo />
                 </div>
@@ -27,11 +27,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                         </li>
                     </ul>
                     <div className="w-full p-6 rounded-sm hover:bg-slate-300">
-                        <Link href="/" className="block w-full"><SignOutButton >Sair</SignOutButton></Link>
+                        <SignOutButton>Sair</SignOutButton>
                     </div>
                 </div>
             </div>
-            <div className="p-6">{children}</div>
+            <div className="flex-1 p-6">{children}</div>
         </div>
     );
 }
