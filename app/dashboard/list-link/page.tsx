@@ -7,19 +7,19 @@ async function getData(): Promise<Sharing[]> {
   return [
     {
       id: "728ed52f",
-      name: 'Draco Cafageste',
+      name: 'Teste1',
       status: "compartilhou",
       email: "m@example.com",
     },
     {
       id: "128ed52f",
-      name: 'Ray Gelada',
+      name: 'Teste2',
       status: "pendente",
       email: "r@example.com",
     },
     {
       id: "128ed52x",
-      name: 'Du Beudo',
+      name: 'Teste3',
       status: "compartilhou",
       email: "d@example.com",
     },

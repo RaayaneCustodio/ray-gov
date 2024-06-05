@@ -12,7 +12,7 @@ interface DashboardLayoutProps {
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
     return (
-        <div className="h-full flex flex-col md:flex-row">
+        <div className="h-full bg-slate-100">
             <DashboardHeader/>
             <div className="flex-1 p-6">{children}</div>
         </div>
