@@ -7,6 +7,8 @@ interface DashboardLayoutProps {
     children: React.ReactNode;
 }
 
+
+
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
     return (
         <div className="h-full flex flex-col md:flex-row">
@@ -27,7 +29,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                         </li>
                     </ul>
                     <div className="w-full p-6 rounded-sm hover:bg-slate-300">
-                        <SignOutButton>Sair</SignOutButton>
+                        <SignOutButton redirectUrl="/">Sair</SignOutButton>
                     </div>
                 </div>
             </div>

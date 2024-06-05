@@ -25,10 +25,10 @@ export default async function DashboardPage() {
 
     return (
         <div className="">
-            <div className="grid grid-cols-12 gap-4">
-                <div className="col-span-10 p-4">
+            <div className="grid gap-4">
+                <div className="p-4">
                     <h2 className="text-2xl font-semibold mb-4">Bem-vindo, {user?.firstName}</h2>
-                    <div className="flex items-start gap-5">
+                    <div className="flex flex-col items-start gap-5 lg:flex-row">
                         <div className="bg-white rounded shadow p-4 w-full">
                             <h3 className="text-lg font-semibold mb-2">Usuários Registrados Recentemente</h3>
                             <ul>
