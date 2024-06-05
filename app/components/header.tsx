@@ -18,7 +18,7 @@ export function Header() {
               <Link href="/" className="nav-link" style={linkStyle}>Inicio</Link>
             </li>
             <li className="nav-item">
-              <Link href="/" className="nav-link" style={linkStyle}>Postagens</Link>
+              <Link href="/postagem" className="nav-link" style={linkStyle}>Postagens</Link>
             </li>
           </ul>
         </div>
