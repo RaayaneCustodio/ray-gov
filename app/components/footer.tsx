@@ -16,10 +16,10 @@ export function Footer() {
           </a>
           <ul className="flex flex-wrap items-center mb-6 text-sm font-medium justify-center">
             <li>
-              <a href="#" style={linkStyle} className="hover:underline me-4 md:me-6">Inicio</a>
+              <a href="/" style={linkStyle} className="hover:underline me-4 md:me-6">Inicio</a>
             </li>
             <li>
-              <a href="#" style={linkStyle} className="hover:underline me-4 md:me-6">Postagens</a>
+              <a href="/postagem" style={linkStyle} className="hover:underline me-4 md:me-6">Postagens</a>
             </li>
             <li>
               <a href="/dashboard" style={linkStyle} className="hover:underline me-4 md:me-6">Logar</a>

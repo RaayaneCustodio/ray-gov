@@ -3,13 +3,6 @@ import { auth, currentUser } from "@clerk/nextjs/server";
 import { getUsers } from '../../lib/clerk';
 import Image from 'next/image';
 
-// interface User {
-//     id: string;
-//     first_name: string;
-//     last_name: string;
-//     email_addresses: any;
-//     profile_image_url: string; 
-// }
 
 export default async function DashboardPage() {
     const { userId } = auth();
@@ -23,6 +16,8 @@ export default async function DashboardPage() {
 
     const users = await getUsers();
     console.log('Usuários:', users);
+
+    
 
     return (
         <div className="">
