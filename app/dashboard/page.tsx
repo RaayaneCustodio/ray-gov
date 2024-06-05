@@ -21,7 +21,7 @@ export default async function DashboardPage() {
 
     return (
         <div className="">
-            <div className="grid gap-4">
+            <div className="grid gap-4 ">
                 <div className="p-4">
                     <h2 className="flex text-2xl font-semibold mb-4 text-center">Bem-vindo, {user?.firstName}</h2>
                     <div className="flex flex-col items-start gap-5 lg:flex-row">
@@ -39,7 +39,7 @@ export default async function DashboardPage() {
                                     return (
                                         // <pre>{JSON.stringify(users,null,2)}</pre>
                                         <li key={user.id} className="flex gap-2 border-b py-2">
-                                            <img src={user.profile_image_url} alt="Foto de perfil" className="w-10 h-10 rounded-full mr-2" />
+                                            <Image src={user.profile_image_url} alt="Foto de perfil" className="w-10 h-10 rounded-full mr-2" width={40} height={40} />
                                             <div>
                                                 <span className="block text-gray-800">{user.first_name} {user.last_name}</span>
                                                 <span className="block text-gray-600">{user.email_addresses[0].email_address}</span>
