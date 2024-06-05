@@ -4,7 +4,7 @@ const nextConfig = {
     // Por exemplo, definir o diretório de saída personalizado
     distDir: 'build',
     images: { 
-      domains: ['www.facebook.com','scontent.fbfh6-1.fna.fbcdn.net']
+      domains: ['www.facebook.com','scontent.fbfh6-1.fna.fbcdn.net', 'images.clerk.dev']
     }
   };
   

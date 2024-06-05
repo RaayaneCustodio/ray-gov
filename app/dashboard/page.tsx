@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { getUsers } from '../../lib/clerk';
+import Image from 'next/image';
 
 // interface User {
 //     id: string;
@@ -68,7 +69,7 @@ export default async function DashboardPage() {
                                     return (
                                         // <pre>{JSON.stringify(users,null,2)}</pre>
                                         <li key={user.id} className="flex gap-2 border-b py-2">
-                                            <img src={user.profile_image_url} alt="Foto de perfil" className="w-10 h-10 rounded-full mr-2" />
+                                            <Image src={user.profile_image_url} alt="Foto de perfil" className="w-10 h-10 rounded-full mr-2" width={40} height={40} />
                                             <div>
                                                 <span className="block text-gray-800">{user.first_name} {user.last_name}</span>
                                                 <span className="block text-gray-600">{user.email_addresses[0].email_address}</span>
