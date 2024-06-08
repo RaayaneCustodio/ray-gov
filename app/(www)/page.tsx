@@ -11,11 +11,7 @@ export default function Home() {
         </div>
         <div className="md:w-1/2 flex flex-col items-center">
           <div className="w-full">
-            <MyCarousel />
           </div>
-          <button className="mt-6 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
-            Compartilhar
-          </button>
         </div>
       </div>
     </main>
