@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Logo } from "#/app/components/svgs/logo.";
 import { SignOutButton } from "@clerk/nextjs";
+import Router from "next/router";
+import { useRouter } from "next/router";
 
 export function DashboardHeader() {
     const [isOpen, setIsOpen] = useState(false);
@@ -14,6 +16,12 @@ export function DashboardHeader() {
     const closeMenu = () => {
         setIsOpen(false);
     };
+
+    const handleSignOut = () => {
+        const router = useRouter();
+        router.push('/'); // Redireciona para a página inicial após o logout
+    };
+
 
     useEffect(() => {
         if (isOpen) {
@@ -34,16 +42,16 @@ export function DashboardHeader() {
             </div>
             <ul className={`item-center gap-10 lg:flex ${isOpen ? 'flex flex-col justify-center bg-slate-100 z-10 items-center fixed top-0 left-0 h-screen w-full' : 'hidden'}`}>
                 <li className="p-6 rounded-sm hover:bg-slate-300 cursor-pointer" onClick={closeMenu}>
-                    <Link href="/dashboard" className="block w-full no-underline">Inicio</Link>
+                    <Link href="/dashboard" className="block w-full ">Inicio</Link>
                 </li>
                 <li className="p-6 rounded-sm hover:bg-slate-300 cursor-pointer" onClick={closeMenu}>
-                    <Link href="/dashboard/create-link" className="block w-full no-underline">Cadastrar link</Link>
+                    <Link href="/dashboard/create-link" className="block w-full ">Cadastrar link</Link>
                 </li>
                 <li className="p-6 rounded-sm hover:bg-slate-300 cursor-pointer" onClick={closeMenu}>
-                    <Link href="/dashboard/list-link" className="block w-full no-underline">Lista de posts</Link>
+                    <Link href="/dashboard/list-link" className="block w-full ">Lista de posts</Link>
                 </li>
                 <li className="p-6 rounded-sm hover:bg-slate-300" onClick={closeMenu}>
-                    <SignOutButton redirectUrl="/">Sair</SignOutButton>
+                    <SignOutButton redirectUrl="/" >Sair</SignOutButton>
                 </li>
             </ul>
             <button onClick={toggle} className='block lg:hidden w-10 y-10 z-20'>
