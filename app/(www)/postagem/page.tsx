@@ -1,6 +1,7 @@
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { getUsers } from '#/lib/clerk';
 import MyCarousel from "#/components/carousel";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default async function PostagemPage() {
   const { userId } = auth();
@@ -12,7 +13,7 @@ export default async function PostagemPage() {
 
   return (
     <main className="min-h-screen bg-gray-900 text-white">
-      <div className="container mx-auto py-12">
+      <div className="container mx-auto py-12 flex flex-col items-center justify-center">
         <h2 className="text-2xl font-semibold mb-4">Bem-vindo, {user?.firstName}</h2>
         <div className="md:w-1/2 flex flex-col items-center">
           <div className="w-full">
