@@ -17,12 +17,6 @@ export function DashboardHeader() {
         setIsOpen(false);
     };
 
-    const handleSignOut = () => {
-        const router = useRouter();
-        router.push('/'); // Redireciona para a página inicial após o logout
-    };
-
-
     useEffect(() => {
         if (isOpen) {
             document.body.style.overflow = 'hidden';
@@ -51,7 +45,7 @@ export function DashboardHeader() {
                     <Link href="/dashboard/list-link" className="block w-full ">Lista de posts</Link>
                 </li>
                 <li className="p-6 rounded-sm hover:bg-slate-300" onClick={closeMenu}>
-                    <SignOutButton redirectUrl="/" >Sair</SignOutButton>
+                    <SignOutButton>Sair</SignOutButton>
                 </li>
             </ul>
             <button onClick={toggle} className='block lg:hidden w-10 y-10 z-20'>

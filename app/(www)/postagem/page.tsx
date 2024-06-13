@@ -1,15 +1,47 @@
-import { auth, currentUser } from "@clerk/nextjs/server";
-import { getUsers } from '#/lib/clerk';
+// app/(www)/postagem/page.tsx
+"use client";
+import React from "react";
+import { useAuth, useUser } from "@clerk/nextjs";
 import MyCarousel from "#/components/carousel";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-export default async function PostagemPage() {
-  const { userId } = auth();
-  if (!userId) {
+export default function PostagemPage() {
+  const { isSignedIn } = useAuth();
+  const { user } = useUser();
+
+  const handleShareClick = async () => {
+    if (!user?.id || !user?.firstName) {
+      alert("Você precisa estar logado para compartilhar.");
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/registerShareAction', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          userId: user.id, 
+          userName: `${user.firstName} ${user.lastName}`, 
+          userEmail: user.emailAddresses[0].emailAddress 
+        }),
+      });
+
+      if (response.ok) {
+        alert("Compartilhamento registrado!");
+      } else {
+        alert("Erro ao registrar compartilhamento.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Erro ao registrar compartilhamento.");
+    }
+  };
+
+  if (!isSignedIn) {
     return <div>Você precisa estar logado para acessar esta página.</div>;
   }
-  const user = await currentUser();
-  const users = await getUsers();
 
   return (
     <main className="min-h-screen bg-gray-900 text-white">
@@ -19,26 +51,12 @@ export default async function PostagemPage() {
           <div className="w-full">
             <MyCarousel />
           </div>
-          {/* <button className="mt-6 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+          <button 
+            className="mt-6 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+            onClick={handleShareClick}
+          >
             Compartilhar
-          </button> */}
-        </div>
-        <div className="flex justify-end mb-4">
-          <button className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded">
-            Criar Postagem
           </button>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* Estrutura para exibir postagens */}
-          <div className="bg-gray-800 p-6 rounded-lg">
-            {/* Adicione aqui a estrutura para exibir cada postagem */}
-          </div>
-          <div className="bg-gray-800 p-6 rounded-lg">
-            {/* Adicione aqui a estrutura para exibir cada postagem */}
-          </div>
-          <div className="bg-gray-800 p-6 rounded-lg">
-            {/* Adicione aqui a estrutura para exibir cada postagem */}
-          </div>
         </div>
       </div>
     </main>

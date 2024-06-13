@@ -21,12 +21,6 @@ export function Footer() {
             <li>
               <a href="/postagem" style={linkStyle} className="hover:underline me-4 md:me-6">Postagens</a>
             </li>
-            <li>
-              <a href="/dashboard" style={linkStyle} className="hover:underline me-4 md:me-6">Logar</a>
-            </li>
-            <li>
-              <a href="/sign-up" style={linkStyle} className="hover:underline">Cadastrar</a>
-            </li>
           </ul>
         </div>
         <hr className="my-6 border-gray-600 sm:mx-auto lg:my-8" />
