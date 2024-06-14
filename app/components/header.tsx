@@ -11,6 +11,10 @@ export function Header() {
     setIsOpen(prev => !prev);
   };
 
+  const closeMenu = () => {
+    setIsOpen(false);
+  };
+
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -30,10 +34,10 @@ export function Header() {
         <Link href="/" className="z-20"><Logo /></Link>
         <ul className={`item-center gap-10 lg:flex ${isOpen ? 'flex flex-col justify-center bg-[#1a202c] z-10 items-center fixed top-0 left-0 h-screen w-full' : 'hidden'}`}>
           <li className="nav-item">
-            <Link href="/" className="nav-link">Inicio</Link>
+            <Link href="/" className="nav-link" onClick={closeMenu}>Inicio</Link>
           </li>
           <li className="nav-item">
-            <Link href="/postagem" className="nav-link">Postagens</Link>
+            <Link href="/postagem" className="nav-link" onClick={closeMenu}>Postagens</Link>
           </li>
         </ul>
         <button onClick={toggle} className='block lg:hidden w-10 y-10 z-20' >
