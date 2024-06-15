@@ -2,8 +2,6 @@
 import React, { useState, useEffect } from "react";
 import { useAuth, useUser } from "@clerk/nextjs";
 import { collection, query, where, getDocs } from "firebase/firestore";
-import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
 import { Sharing, columns } from "./links/columns";
 import { DataTable } from "./links/data-table";
 import { database } from "#/firebase"; 
@@ -20,33 +18,27 @@ export default function ListLinkPage() {
     try {
       const querySnapshot = await getDocs(collection(database, "userActions"));
 
-      const data: Sharing[] = querySnapshot.docs.map(doc => ({
-        id: doc.id,
-        name: doc.data().firstName || "",
-        lastName: doc.data().lastName || "",
-        status: doc.data().action || "",
-        email: doc.data().email || "",
-        postagem: doc.data().postagem || "",
-        timestamp: formatTimestamp(doc.data().timestamp),
-        userId: doc.data().userId || "",
-      }));
+      const data: Sharing[] = querySnapshot.docs
+        .filter(doc => {
+          const fullName = `${doc.data().firstName} ${doc.data().lastName}`.toLowerCase();
+          return fullName.includes(username.toLowerCase());
+        })
+        .map(doc => ({
+          id: doc.id,
+          name: doc.data().firstName || "",
+          lastName: doc.data().lastName || "",
+          status: doc.data().action || "",
+          email: doc.data().email || "",
+          postagem: doc.data().postagem || "",
+          timestamp: doc.data().timestamp || "",
+          userId: doc.data().userId || "",
+        }));
 
       return data;
     } catch (error) {
       console.error("Erro ao buscar dados:", error);
       return [];
     }
-  }
-
-  // Função para formatar o timestamp
-  function formatTimestamp(timestamp: string): string {
-    // Converter timestamp para um objeto Date
-    const date = new Date(timestamp);
-
-    // Formatar a data e hora para o formato desejado e no fuso horário de Brasília
-    const formattedDate = format(date, "dd/MM/yyyy HH:mm:ss", { locale: ptBR });
-
-    return formattedDate;
   }
 
   // Função para buscar todos os dados no Firestore
@@ -61,7 +53,7 @@ export default function ListLinkPage() {
         status: doc.data().action || "",
         email: doc.data().email || "",
         postagem: doc.data().postagem || "",
-        timestamp: formatTimestamp(doc.data().timestamp),
+        timestamp: doc.data().timestamp || "",
         userId: doc.data().userId || "",
       }));
 
