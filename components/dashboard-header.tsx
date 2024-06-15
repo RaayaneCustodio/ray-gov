@@ -39,10 +39,7 @@ export function DashboardHeader() {
                     <Link href="/dashboard" className="block w-full ">Inicio</Link>
                 </li>
                 <li className="p-6 rounded-sm hover:bg-slate-300 cursor-pointer" onClick={closeMenu}>
-                    <Link href="/dashboard/create-link" className="block w-full ">Cadastrar link</Link>
-                </li>
-                <li className="p-6 rounded-sm hover:bg-slate-300 cursor-pointer" onClick={closeMenu}>
-                    <Link href="/dashboard/list-link" className="block w-full ">Lista de posts</Link>
+                    <Link href="/dashboard/list-link" className="block w-full ">Tabela de Usuarios</Link>
                 </li>
                 <li className="p-6 rounded-sm hover:bg-slate-300" onClick={closeMenu}>
                     <SignOutButton>Sair</SignOutButton>

@@ -1,15 +1,16 @@
-"use client"
+// columns.ts
 
-import { ColumnDef } from "@tanstack/react-table"
+import { ColumnDef } from "@tanstack/react-table";
 
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
 export type Sharing = {
-  id: string
-  name: string
-  status: "pendente" | "compartilhou"
-  email: string
-}
+  id: string;
+  name: string;
+  status: string;
+  email: string;
+  postagem: string;
+  timestamp: string;
+  userId: string;
+};
 
 export const columns: ColumnDef<Sharing>[] = [
   {
@@ -24,4 +25,16 @@ export const columns: ColumnDef<Sharing>[] = [
     accessorKey: "status",
     header: "Status",
   },
-]
+  {
+    accessorKey: "postagem",
+    header: "Postagem",
+  },
+  {
+    accessorKey: "timestamp",
+    header: "Timestamp",
+  },
+  {
+    accessorKey: "userId",
+    header: "User ID",
+  },
+];
