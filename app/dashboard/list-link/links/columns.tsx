@@ -5,6 +5,7 @@ import { ColumnDef } from "@tanstack/react-table";
 export type Sharing = {
   id: string;
   name: string;
+  lastName: string;
   status: string;
   email: string;
   postagem: string;
@@ -15,7 +16,11 @@ export type Sharing = {
 export const columns: ColumnDef<Sharing>[] = [
   {
     accessorKey: "name",
-    header: "Name",
+    header: "Nome",
+  },
+  {
+    accessorKey: "lastName",
+    header: "Sobrenome",
   },
   {
     accessorKey: "email",
@@ -31,10 +36,10 @@ export const columns: ColumnDef<Sharing>[] = [
   },
   {
     accessorKey: "timestamp",
-    header: "Timestamp",
+    header: "Data e hora",
   },
   {
     accessorKey: "userId",
-    header: "User ID",
+    header: "ID",
   },
 ];
