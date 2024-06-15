@@ -1,59 +1,47 @@
-// app/(www)/postagem/page.tsx
 "use client";
 import React from "react";
 import { useAuth, useUser } from "@clerk/nextjs";
-import MyCarousel from "#/components/carousel";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { doc, setDoc } from "firebase/firestore";
+import { database } from "#/firebase";
 
 export default function PostagemPage() {
   const { isSignedIn } = useAuth();
   const { user } = useUser();
 
-  const handleShareClick = async () => {
-    if (!user?.id || !user?.firstName) {
+  const saveUserData = async () => {
+    if (!user?.id || !user?.firstName || !user?.emailAddresses?.[0]?.emailAddress) {
       alert("Você precisa estar logado para compartilhar.");
       return;
     }
 
-    try {
-      const response = await fetch('/api/registerShareAction', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ 
-          userId: user.id, 
-          userName: `${user.firstName} ${user.lastName}`, 
-          userEmail: user.emailAddresses[0].emailAddress 
-        }),
-      });
+    const userData = {
+      userId: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName || "",
+      email: user.emailAddresses[0].emailAddress,
+      timestamp: new Date().toISOString(),
+      action: "Clicou no Botao Compartilhar"
+    };
 
-      if (response.ok) {
-        alert("Compartilhamento registrado!");
-      } else {
-        alert("Erro ao registrar compartilhamento.");
-      }
+    try {
+      const userDocRef = doc(database, "userActions", user.id);
+      await setDoc(userDocRef, userData, { merge: true });
+      alert("Informação de compartilhamento salva com sucesso!");
     } catch (error) {
-      console.error("Error:", error);
-      alert("Erro ao registrar compartilhamento.");
+      console.error("Erro ao salvar a informação de compartilhamento:", error);
+      alert("Erro ao salvar a informação de compartilhamento.");
     }
   };
-
-  if (!isSignedIn) {
-    return <div>Você precisa estar logado para acessar esta página.</div>;
-  }
 
   return (
     <main className="min-h-screen bg-gray-900 text-white">
       <div className="container mx-auto py-12 flex flex-col items-center justify-center">
         <h2 className="text-2xl font-semibold mb-4">Bem-vindo, {user?.firstName}</h2>
         <div className="md:w-1/2 flex flex-col items-center">
-          <div className="w-full">
-            <MyCarousel />
-          </div>
           <button 
             className="mt-6 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
-            onClick={handleShareClick}
+            onClick={saveUserData}
           >
             Compartilhar
           </button>
