@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { getUsers } from '../../lib/clerk';
 import Image from 'next/image';
-
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 
 export default async function DashboardPage() {
     const { userId } = auth();
@@ -10,14 +11,20 @@ export default async function DashboardPage() {
         return <div>Você precisa estar logado para acessar esta página.</div>;
     }
 
-
     const user = await currentUser();
     // console.log('Usuário:', user);
 
     const users = await getUsers();
     console.log('Usuários:', users);
 
+    function formatTimestamp(timestamp: string): string {
+        const date = new Date(timestamp);
+
+        // Formatar a data e hora para o formato desejado e no fuso horário de Brasília
+        const formattedDate = format(date, "dd/MM/yyyy HH:mm:ss", { locale: ptBR });
     
+        return format(date, "dd/MM/yyyy HH:mm:ss", { locale: ptBR });
+    }
 
     return (
         <div className="">
@@ -29,15 +36,8 @@ export default async function DashboardPage() {
                             <h3 className="text-lg font-semibold mb-2">Usuários Registrados Recentemente</h3>
                             <ul>
                                 {users && users.length > 0 && users.map((user: any) => {
-                                    const timestamp = new Date(user.email_addresses[0].created_at)
-                                    const day = timestamp.getUTCDate();
-                                    const month = timestamp.getUTCMonth() + 1; // Os meses em JavaScript são baseados em zero
-                                    const year = timestamp.getUTCFullYear();
-                                    const hours = timestamp.getUTCHours();
-                                    const minutes = timestamp.getUTCMinutes();
-                                    const formattedDate = `${day}-${month}-${year} ${hours}:${minutes}`;
+                                    const formattedDate = formatTimestamp(user.email_addresses[0].created_at);
                                     return (
-                                        // <pre>{JSON.stringify(users,null,2)}</pre>
                                         <li key={user.id} className="flex gap-2 border-b py-2">
                                             <Image src={user.image_url} alt="Foto de perfil" className="w-10 h-10 rounded-full mr-2" width={40} height={40} />
                                             <div>
@@ -46,7 +46,7 @@ export default async function DashboardPage() {
                                                 <span className="block text-gray-600">{formattedDate}</span>
                                             </div>
                                         </li>
-                                    )
+                                    );
                                 })}
                             </ul>
                         </div>
@@ -54,15 +54,8 @@ export default async function DashboardPage() {
                             <h3 className="text-lg font-semibold mb-2">Usuários Logados Recentemente</h3>
                             <ul>
                                 {users && users.length > 0 && users.map((user: any) => {
-                                    const timestamp = new Date(user.last_sign_in_at)
-                                    const day = timestamp.getUTCDate();
-                                    const month = timestamp.getUTCMonth() + 1; // Os meses em JavaScript são baseados em zero
-                                    const year = timestamp.getUTCFullYear();
-                                    const hours = timestamp.getUTCHours();
-                                    const minutes = timestamp.getUTCMinutes();
-                                    const formattedDate = `${day}-${month}-${year} ${hours}:${minutes}`;
+                                    const formattedDate = formatTimestamp(user.last_sign_in_at);
                                     return (
-                                        // <pre>{JSON.stringify(users,null,2)}</pre>
                                         <li key={user.id} className="flex gap-2 border-b py-2">
                                             <Image src={user.image_url} alt="Foto de perfil" className="w-10 h-10 rounded-full mr-2" width={40} height={40} />
                                             <div>
@@ -71,7 +64,7 @@ export default async function DashboardPage() {
                                                 <span className="block text-gray-600">{formattedDate}</span>
                                             </div>
                                         </li>
-                                    )
+                                    );
                                 })}
                             </ul>
                         </div>

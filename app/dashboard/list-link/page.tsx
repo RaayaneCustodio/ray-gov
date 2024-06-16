@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from "react";
 import { useAuth, useUser } from "@clerk/nextjs";
 import { collection, query, where, getDocs } from "firebase/firestore";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 import { Sharing, columns } from "./links/columns";
 import { DataTable } from "./links/data-table";
 import { database } from "#/firebase"; 
@@ -41,6 +43,16 @@ export default function ListLinkPage() {
     }
   }
 
+  function formatTimestamp(timestamp: string): string {
+    // Converter timestamp para um objeto Date
+    const date = new Date(timestamp);
+
+    // Formatar a data e hora para o formato desejado e no fuso horário de Brasília
+    const formattedDate = format(date, "dd/MM/yyyy HH:mm:ss", { locale: ptBR });
+
+    return formattedDate;
+  }
+
   // Função para buscar todos os dados no Firestore
   async function getAllData(): Promise<Sharing[]> {
     try {
@@ -53,7 +65,7 @@ export default function ListLinkPage() {
         status: doc.data().action || "",
         email: doc.data().email || "",
         postagem: doc.data().postagem || "",
-        timestamp: doc.data().timestamp || "",
+        timestamp: formatTimestamp(doc.data().timestamp),
         userId: doc.data().userId || "",
       }));
 
