@@ -18,13 +18,14 @@ export default async function DashboardPage() {
     console.log('Usuários:', users);
 
     function formatTimestamp(timestamp: string): string {
+        // Converter timestamp para um objeto Date
         const date = new Date(timestamp);
-
+    
         // Formatar a data e hora para o formato desejado e no fuso horário de Brasília
         const formattedDate = format(date, "dd/MM/yyyy HH:mm:ss", { locale: ptBR });
     
-        return format(date, "dd/MM/yyyy HH:mm:ss", { locale: ptBR });
-    }
+        return formattedDate;
+      }
 
     return (
         <div className="">
