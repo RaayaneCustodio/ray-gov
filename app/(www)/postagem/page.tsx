@@ -4,6 +4,9 @@ import { useAuth, useUser } from "@clerk/nextjs";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { doc, setDoc } from "firebase/firestore";
 import { database } from "#/firebase";
+import Link from 'next/link'; 
+import Image from 'next/image'; 
+import elizabeth from '#/app/components/svgs/elizabeth.jpg';
 
 export default function PostagemPage() {
   const { isSignedIn } = useAuth();
@@ -27,7 +30,7 @@ export default function PostagemPage() {
     try {
       const userDocRef = doc(database, "userActions", user.id);
       await setDoc(userDocRef, userData, { merge: true });
-      alert("Informação de compartilhamento salva com sucesso!");
+      console.log("Informação de compartilhamento salva com sucesso!");
     } catch (error) {
       console.error("Erro ao salvar a informação de compartilhamento:", error);
       alert("Erro ao salvar a informação de compartilhamento.");
@@ -39,12 +42,21 @@ export default function PostagemPage() {
       <div className="container mx-auto py-12 flex flex-col items-center justify-center">
         <h2 className="text-2xl font-semibold mb-4">Bem-vindo, {user?.firstName}</h2>
         <div className="md:w-1/2 flex flex-col items-center">
-          <button 
-            className="mt-6 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
-            onClick={saveUserData}
-          >
-            Compartilhar
-          </button>
+          <Image
+            src={elizabeth} // Usando a imagem importada
+            alt="Imagem da postagem"
+            width={500} // Defina a largura da imagem
+            height={300} 
+            className="w-full h-auto rounded cursor-pointer transition hover:opacity-90"
+          />
+          <Link href="https://www.instagram.com/reel/C8P35I4u_yo/?igsh=MW93MGx6cHdibDNqaQ%3D%3D">
+            <button
+              className="mt-6 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+              onClick={saveUserData}
+            >
+              Compartilhar
+            </button>
+          </Link>
         </div>
       </div>
     </main>
