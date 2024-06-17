@@ -16,27 +16,36 @@ const MyCarousel = () => {
   return (
     <Carousel activeIndex={index} onSelect={handleSelect}>
       <Carousel.Item>
-          <Image src="https://scontent.fbfh6-1.fna.fbcdn.net/v/t39.30808-6/444455835_18435152311050538_6661775623357797219_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeEipTJ5k_0ke4Trw9v2rHR1mLUTcy9fHSOYtRNzL18dIxkz5lxoFtMkHiIzy_nKsgj7BB418Tp8OIAbu_SUPKS-&_nc_ohc=Ryr3Y1brKh8Q7kNvgFaiqg6&_nc_ht=scontent.fbfh6-1.fna&oh=00_AYCWEH-pNdX4VJdfTOv7iMPx3CQHEVmLFhUa7_EUTvAUcg&oe=666588E1" alt='postagem' width={800} height={400} />
-        <Carousel.Caption>
-          <h3>Postagem 1</h3>
-          <p>texto 1</p>
-        </Carousel.Caption>
+        <Link href="/postagem/postagem01">
+          <Image src="https://firebasestorage.googleapis.com/v0/b/compartilhai.appspot.com/o/elizabeth.jpg?alt=media&token=e1e420a6-778c-4323-a14f-543e3ffd4418" alt='postagem' width={800} height={400} />
+          <Carousel.Caption>
+            <h3>✈ Nos Ares de PG! ✈
+            </h3>
+            <p>Conferi  de perto o salto de paraquedas no evento "Nos Ares de PG 2"! 🎉🪂
+
+              Venha ver aviões, sobrevoos e carros antigos neste fim de semana no Aeroporto Municipal. 🚁🚒✨
+            </p>
+          </Carousel.Caption>
+        </Link>
       </Carousel.Item>
       <Carousel.Item>
-          <Image src="https://scontent.fbfh6-1.fna.fbcdn.net/v/t39.30808-6/444503988_861836395764446_3534945374592479391_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeE8sXfosaRqtBbwvmS8PlCUw4oDcvxBW_bDigNy_EFb9rcVP4psVXc15riNYkCBSfZL7A-QES5pkvciEtFjMwia&_nc_ohc=Lnp8-kzc1-8Q7kNvgEwzn3F&_nc_ht=scontent.fbfh6-1.fna&oh=00_AYAzTzku89QJVdP0sQtWi0iCOU8G_83FH92g9fFITj6sag&oe=6665B0C7" alt='postagem1' width={800} height={400} />
+        <Link href="/postagem/postagem02">
+        <Image src="https://firebasestorage.googleapis.com/v0/b/compartilhai.appspot.com/o/elizabeth3.jpg?alt=media&token=6b1ec886-bba7-4a28-a42b-3ae86766122b" alt='postagem1' width={800} height={400} />
         <Carousel.Caption>
-          <h3>Postagem 2</h3>
-          <p>texto 2</p>
+          <h3>Bom Domingo!!</h3>
+          <p>Visita aos irmãos da Copiosa  Redenção 🌳☀ #domingo #paz
+          </p>
         </Carousel.Caption>
-      </Carousel.Item>
-      <Carousel.Item>
+      </Link>
+    </Carousel.Item>
+      {/* <Carousel.Item>
           <Image src="https://scontent.fbfh6-1.fna.fbcdn.net/v/t39.30808-6/444483699_18435933376050538_6814353393847821119_n.jpg?stp=dst-jpg_fr_q85&_nc_cat=103&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeGM58W-nT22tDAc0vFyqDy5emIDuHj465V6YgO4ePjrlcep2pEmd0ZdktYAN8byeJChSzMJ-4qHM4sRnq5DjAHA&_nc_ohc=2soWLxFHhtEQ7kNvgE3Gv2H&_nc_ht=scontent.fbfh6-1.fna&oh=00_AYDNmONyDN3va5dPkyfZ3n_lL_BWvQVf93zvaPbwa8WRDw&oe=6665B280" alt='postagem2' width={800} height={400} />
         <Carousel.Caption>
           <h3>Postagem 3</h3>
           <p>texto 3</p>
         </Carousel.Caption>
-      </Carousel.Item>
-    </Carousel>
+      </Carousel.Item> */}
+    </Carousel >
   );
 };
 

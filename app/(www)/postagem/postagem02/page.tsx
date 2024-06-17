@@ -27,9 +27,9 @@ export default function PostagemPage() {
     };
 
     try {
-      const userDocRef = doc(database, "userActions", user.id);
+      const userDocRef = doc(database, "userActions1", user.id); // Aqui mudamos para userActions1
       await setDoc(userDocRef, userData, { merge: true });
-      console.log("Informação de compartilhamento salva com sucesso!");
+      console.log("Informação de compartilhamento salva com sucesso na coleção userActions1!");
     } catch (error) {
       console.error("Erro ao salvar a informação de compartilhamento:", error);
       alert("Erro ao salvar a informação de compartilhamento.");
@@ -42,13 +42,13 @@ export default function PostagemPage() {
         <h2 className="text-2xl font-semibold mb-4">Bem-vindo, {user?.firstName}</h2>
         <div className="md:w-1/2 flex flex-col items-center">
           <Image
-            src="https://firebasestorage.googleapis.com/v0/b/compartilhai.appspot.com/o/elizabeth.jpg?alt=media&token=e1e420a6-778c-4323-a14f-543e3ffd4418" // Usando a imagem importada
+            src="https://firebasestorage.googleapis.com/v0/b/compartilhai.appspot.com/o/elizabeth3.jpg?alt=media&token=6b1ec886-bba7-4a28-a42b-3ae86766122b" // Usando a imagem importada
             alt="Imagem da postagem"
             width={500}
             height={300} 
             className="w-full h-auto rounded cursor-pointer transition hover:opacity-90"
           />
-          <Link href="https://www.instagram.com/reel/C8P35I4u_yo/?igsh=MW93MGx6cHdibDNqaQ%3D%3D">
+          <Link href="https://www.instagram.com/p/C8Rt1aYOsGQ/">
             <button
               className="mt-6 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
               onClick={saveUserData}
