@@ -113,7 +113,7 @@ export default function ListLinkPage() {
     } else {
       // Caso contrário, filtrar os resultados de acordo com o termo de busca
       const filteredData = allData.filter(item =>
-        `${item.name} ${item.lastName}`
+        `${item.name} ${item.lastName}${item.status} ${item.postagem}`
           .toLowerCase()
           .includes(searchTerm.toLowerCase())
       );
