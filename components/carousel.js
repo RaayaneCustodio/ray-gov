@@ -17,7 +17,7 @@ const MyCarousel = () => {
         <Link href="/postagem/postagem01">
           <Image src="https://firebasestorage.googleapis.com/v0/b/compartilhai.appspot.com/o/elizabeth.jpg?alt=media&token=e1e420a6-778c-4323-a14f-543e3ffd4418" alt="postagem" width={800} height={400} />
           <Carousel.Caption>
-            <h3>✈ Nos Ares de PG! ✈</h3>
+            <h3>Nos Ares de PG!</h3>
             <p>Conferi de perto o salto de paraquedas no evento "Nos Ares de PG 2"!Venha ver aviões, sobrevoos e carros antigos neste fim de semana no Aeroporto Municipal.</p>
           </Carousel.Caption>
         </Link>
