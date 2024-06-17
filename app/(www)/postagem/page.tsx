@@ -6,7 +6,6 @@ import { doc, setDoc } from "firebase/firestore";
 import { database } from "#/firebase";
 import Link from 'next/link'; 
 import Image from 'next/image'; 
-import elizabeth from '#/app/components/svgs/elizabeth.jpg';
 
 export default function PostagemPage() {
   const { isSignedIn } = useAuth();
@@ -43,9 +42,9 @@ export default function PostagemPage() {
         <h2 className="text-2xl font-semibold mb-4">Bem-vindo, {user?.firstName}</h2>
         <div className="md:w-1/2 flex flex-col items-center">
           <Image
-            src={elizabeth} // Usando a imagem importada
+            src="https://firebasestorage.googleapis.com/v0/b/compartilhai.appspot.com/o/elizabeth.jpg?alt=media&token=e1e420a6-778c-4323-a14f-543e3ffd4418" // Usando a imagem importada
             alt="Imagem da postagem"
-            width={500} // Defina a largura da imagem
+            width={500}
             height={300} 
             className="w-full h-auto rounded cursor-pointer transition hover:opacity-90"
           />
