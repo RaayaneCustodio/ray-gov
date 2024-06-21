@@ -44,7 +44,7 @@ export default function InstaFeed() {
     event.preventDefault();
     const result = await saveLink(instagramLink);
     if (result.success) {
-      alert('Link salvo com sucesso!');
+      alert('Link salvo com sucesso!!');
       setInstagramLink('');
       getInstaFeed(); // Atualiza o feed após salvar o link
     } else {
