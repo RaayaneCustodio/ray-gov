@@ -22,8 +22,7 @@ export default function InstaFeed() {
   }, []);
 
   async function getInstaFeed() {
-    const token = process.env.NEXT_PUBLIC_INSTAGRAM_ACCESS_TOKEN;
-
+    const token = process.env.NEXT_PUBLIC_INSTAGRAM_ACCESS_TOKEN; 
     const fields = "media_url,media_type,caption,permalink";
     const url = `https://graph.instagram.com/me/media?access_token=${token}&fields=${fields}`;
 
@@ -58,9 +57,11 @@ export default function InstaFeed() {
       {feedList.map(item => (
         <li key={item.id} className="relative flex flex-col sm:flex-row xl:flex-col items-start">
           <div className="order-1 sm:ml-6 xl:ml-0">
-            <div className="prose prose-slate prose-sm text-slate-600">
-              <p>{item.caption || ""}</p> {/* Mostra a descrição se disponível, senão vazio */}
-            </div>
+            {item.caption && (
+              <div className="prose prose-slate prose-sm text-slate-600">
+                <p>{item.caption}</p>
+              </div>
+            )}
             <a
               className="group inline-flex items-center h-9 rounded-full text-sm font-semibold whitespace-nowrap px-3 focus:outline-none focus:ring-2 bg-slate-100 text-slate-700 hover:bg-slate-200 hover:text-slate-900 focus:ring-slate-500 mt-6"
               href={item.permalink}
@@ -86,7 +87,7 @@ export default function InstaFeed() {
           {item.media_type === "IMAGE" ? (
             <Image
               src={item.media_url}
-              alt=""
+              alt={item.caption || ""}
               layout="responsive"
               width={640}
               height={640}
