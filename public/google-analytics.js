@@ -4,6 +4,6 @@ export const initGA = () => {
       window.dataLayer = window.dataLayer || [];
       function gtag(){ dataLayer.push(arguments); }
       gtag('js', new Date());
-      gtag('config', 'G-KQJD5DT77X');  // Substitua pelo seu ID do Google Analytics
+      gtag('config', 'G-KQJD5DT77X'); 
     }
   };

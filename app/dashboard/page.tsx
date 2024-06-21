@@ -53,7 +53,7 @@ export default async function DashboardPage() {
                         </div>
                         <div className="bg-white rounded shadow p-4 w-full">
                             <h3 className="text-lg font-semibold mb-2">Usuários Logados Recentemente</h3>
-                            <ul>
+                            <ul>0
                                 {users && users.length > 0 && users.map((user: any) => {
                                     const formattedDate = formatTimestamp(user.last_sign_in_at);
                                     return (

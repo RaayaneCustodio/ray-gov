@@ -34,7 +34,7 @@
     ".next/types/**/*.ts",
     "app/dashboard/create-link",
     "build/types/**/*.ts"
-  ],
+, "components/firebaseFunctions.js"  ],
   "exclude": [
     "node_modules"
   ]
