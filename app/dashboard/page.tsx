@@ -34,7 +34,7 @@ export default async function DashboardPage() {
                     <h2 className="flex text-2xl font-semibold mb-4 text-center">Bem-vindo, {user?.firstName}</h2>
                     <div className="flex flex-col items-start gap-5 lg:flex-row">
                         <div className="bg-white rounded shadow p-4 w-full">
-                            <h3 className="text-lg font-semibold mb-2">Usuários Registrados Recentemente</h3>
+                            <h3 className="text-lg font-semibold mb-2">Usuários Registrados Recentemente:</h3>
                             <ul>
                                 {users && users.length > 0 && users.map((user: any) => {
                                     const formattedDate = formatTimestamp(user.email_addresses[0].created_at);
