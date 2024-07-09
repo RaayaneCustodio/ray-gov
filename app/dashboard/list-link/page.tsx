@@ -1,12 +1,12 @@
-"use client"
+"use client";
 import React, { useState, useEffect } from "react";
 import { useAuth, useUser } from "@clerk/nextjs";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Sharing, columns } from "./links/columns";
 import { DataTable } from "./links/data-table";
-import { database } from "#/firebase"; 
+import { database } from "#/firebase";
 
 export default function ListLinkPage() {
   const { isSignedIn } = useAuth();
@@ -31,7 +31,7 @@ export default function ListLinkPage() {
           lastName: doc.data().lastName || "",
           status: doc.data().action || "",
           email: doc.data().email || "",
-          postagem: doc.data().postagem || "",
+          postagem: doc.data().postagem || "",  // Verifique se `postagem` está sendo lido
           timestamp: doc.data().timestamp || "",
           userId: doc.data().userId || "",
         }));
@@ -64,7 +64,7 @@ export default function ListLinkPage() {
         lastName: doc.data().lastName || "",
         status: doc.data().action || "",
         email: doc.data().email || "",
-        postagem: doc.data().postagem || "",
+        postagem: doc.data().postagem || "",  // Verifique se isso está sendo lido
         timestamp: formatTimestamp(doc.data().timestamp),
         userId: doc.data().userId || "",
       }));
@@ -76,7 +76,6 @@ export default function ListLinkPage() {
     }
   }
 
-  // Lidar com a mudança no campo de busca
   const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const username = event.target.value;
     setSearchTerm(username);
@@ -89,23 +88,20 @@ export default function ListLinkPage() {
     }
   };
 
-  // Buscar todos os dados quando o usuário está autenticado
   useEffect(() => {
-    const fetchData = async () => {
+    async function fetchData() {
       try {
         const data = await getAllData();
         setAllData(data);
+        setSearchResults(data);
       } catch (error) {
         console.error("Erro ao buscar todos os dados:", error);
       }
-    };
-
-    if (isSignedIn) {
-      fetchData();
     }
-  }, [isSignedIn]);
 
-  // Atualizar os resultados da pesquisa quando o termo de busca ou todos os dados mudarem
+    fetchData();
+  }, []);
+
   useEffect(() => {
     // Se o termo de busca estiver vazio, mostrar todos os dados
     if (searchTerm === "") {
@@ -113,7 +109,7 @@ export default function ListLinkPage() {
     } else {
       // Caso contrário, filtrar os resultados de acordo com o termo de busca
       const filteredData = allData.filter(item =>
-        `${item.name} ${item.lastName}${item.status} ${item.postagem}`
+        `${item.name} ${item.lastName} ${item.status} ${item.postagem}`  // Verifique o campo `postagem` aqui
           .toLowerCase()
           .includes(searchTerm.toLowerCase())
       );
@@ -121,22 +117,18 @@ export default function ListLinkPage() {
     }
   }, [searchTerm, allData]);
 
+  if (!isSignedIn) {
+    return <p>Você precisa estar logado para acessar esta página.</p>;
+  }
+
   return (
     <div>
-      <div>
-        <form onSubmit={e => e.preventDefault()}>
-          <div className="grid gap-1">
-            <label htmlFor="username">Buscar</label>
-            <input
-              type="text"
-              id="username"
-              className="h-full border p-3 rounded"
-              value={searchTerm}
-              onChange={handleChange}
-            />
-          </div>
-        </form>
-      </div>
+      <input
+        type="text"
+        placeholder="Digite o nome do usuário para pesquisar..."
+        value={searchTerm}
+        onChange={handleChange}
+      />
       <DataTable columns={columns} data={searchResults} />
     </div>
   );
