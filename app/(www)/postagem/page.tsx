@@ -5,6 +5,7 @@ import { useAuth, useUser } from "@clerk/nextjs";
 import { doc, setDoc } from "firebase/firestore";
 import { database } from "#/firebase";
 import Image from 'next/image';
+import { Previa } from './previa';  // Certifique-se de que o caminho está correto
 
 interface IFeedItem {
   id: string;
@@ -70,63 +71,72 @@ export default function InstaFeed() {
   };
 
   return (
-    <ul className="grid grid-cols-1 xl:grid-cols-3 gap-y-10 gap-x-6 items-start p-8">
-      {feedList.map(item => (
-        <li key={item.id} className="relative flex flex-col sm:flex-row xl:flex-col items-start">
-          <div className="order-1 sm:ml-6 xl:ml-0">
-            {item.caption && (
-              <div className="prose prose-slate prose-sm text-slate-600">
-                <p>{item.caption}</p>
-              </div>
+    <>
+      <Previa
+        title="Compartilhe suas Postagens do Instagram!"
+        description="Veja e compartilhe as postagens mais recentes do Instagram com seus amigos."
+        url={process.env.NEXT_PUBLIC_APP_URL || "https://example.com/postagem"}
+        image="/path/to/your/default/image.jpg"  // Substitua com uma imagem padrão ou deixe como está se não houver imagem
+      />
+
+      <ul className="grid grid-cols-1 xl:grid-cols-3 gap-y-10 gap-x-6 items-start p-8">
+        {feedList.map(item => (
+          <li key={item.id} className="relative flex flex-col sm:flex-row xl:flex-col items-start">
+            <div className="order-1 sm:ml-6 xl:ml-0">
+              {item.caption && (
+                <div className="prose prose-slate prose-sm text-slate-600">
+                  <p>{item.caption}</p>
+                </div>
+              )}
+              <button
+                className="group inline-flex items-center h-9 rounded-full text-sm font-semibold whitespace-nowrap px-3 focus:outline-none focus:ring-2 bg-slate-100 text-slate-700 hover:bg-slate-200 hover:text-slate-900 focus:ring-slate-500 mt-6"
+                onClick={() => saveUserDataAndRedirect(item)}
+              >
+                Compartilhar
+              </button>
+            </div>
+            {item.media_type === "IMAGE" ? (
+              <Image
+                src={item.media_url}
+                alt={item.caption || ""}
+                layout="responsive"
+                width={640}
+                height={640}
+                className="mb-6 shadow-md rounded-lg bg-slate-50 w-full sm:w-[17rem] sm:mb-0 xl:mb-6 xl:w-full"
+              />
+            ) : item.media_type === "VIDEO" ? (
+              <video
+                controls
+                className="mb-6 shadow-md rounded-lg bg-slate-50 w-full sm:w-[17rem] sm:mb-0 xl:mb-6 xl:w-full"
+              >
+                <source src={item.media_url} type="video/mp4" />
+              </video>
+            ) : (
+              item.children?.map(child => (
+                <div key={child.id} className="w-full">
+                  {child.media_type === "IMAGE" ? (
+                    <Image
+                      src={child.media_url}
+                      alt={child.caption || ""}
+                      layout="responsive"
+                      width={640}
+                      height={640}
+                      className="mb-6 shadow-md rounded-lg bg-slate-50 w-full sm:w-[17rem] sm:mb-0 xl:mb-6 xl:w-full"
+                    />
+                  ) : (
+                    <video
+                      controls
+                      className="mb-6 shadow-md rounded-lg bg-slate-50 w-full sm:w-[17rem] sm:mb-0 xl:mb-6 xl:w-full"
+                    >
+                      <source src={child.media_url} type="video/mp4" />
+                    </video>
+                  )}
+                </div>
+              ))
             )}
-            <button
-              className="group inline-flex items-center h-9 rounded-full text-sm font-semibold whitespace-nowrap px-3 focus:outline-none focus:ring-2 bg-slate-100 text-slate-700 hover:bg-slate-200 hover:text-slate-900 focus:ring-slate-500 mt-6"
-              onClick={() => saveUserDataAndRedirect(item)}
-            >
-              Compartilhar
-            </button>
-          </div>
-          {item.media_type === "IMAGE" ? (
-            <Image
-              src={item.media_url}
-              alt={item.caption || ""}
-              layout="responsive"
-              width={640}
-              height={640}
-              className="mb-6 shadow-md rounded-lg bg-slate-50 w-full sm:w-[17rem] sm:mb-0 xl:mb-6 xl:w-full"
-            />
-          ) : item.media_type === "VIDEO" ? (
-            <video
-              controls
-              className="mb-6 shadow-md rounded-lg bg-slate-50 w-full sm:w-[17rem] sm:mb-0 xl:mb-6 xl:w-full"
-            >
-              <source src={item.media_url} type="video/mp4" />
-            </video>
-          ) : (
-            item.children?.map(child => (
-              <div key={child.id} className="w-full">
-                {child.media_type === "IMAGE" ? (
-                  <Image
-                    src={child.media_url}
-                    alt={child.caption || ""}
-                    layout="responsive"
-                    width={640}
-                    height={640}
-                    className="mb-6 shadow-md rounded-lg bg-slate-50 w-full sm:w-[17rem] sm:mb-0 xl:mb-6 xl:w-full"
-                  />
-                ) : (
-                  <video
-                    controls
-                    className="mb-6 shadow-md rounded-lg bg-slate-50 w-full sm:w-[17rem] sm:mb-0 xl:mb-6 xl:w-full"
-                  >
-                    <source src={child.media_url} type="video/mp4" />
-                  </video>
-                )}
-              </div>
-            ))
-          )}
-        </li>
-      ))}
-    </ul>
+          </li>
+        ))}
+      </ul>
+    </>
   );
 }
