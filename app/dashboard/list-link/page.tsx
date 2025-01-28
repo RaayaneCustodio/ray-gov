@@ -2,8 +2,6 @@
 import React, { useState, useEffect } from "react";
 import { useAuth, useUser } from "@clerk/nextjs";
 import { collection, getDocs } from "firebase/firestore";
-import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
 import { Sharing, columns } from "./links/columns";
 import { DataTable } from "./links/data-table";
 import { database } from "#/firebase";
@@ -14,6 +12,54 @@ export default function ListLinkPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState<Sharing[]>([]);
   const [allData, setAllData] = useState<Sharing[]>([]);
+
+  // Função para formatar a data e hora do Firebase
+  function formatFirebaseDate(firebaseDate: string): string {
+    if (!firebaseDate) return "Data não disponível";
+
+    const date = new Date(firebaseDate);
+
+    if (isNaN(date.getTime())) return "Data inválida";
+
+    const formattedDate = date.toLocaleDateString("pt-BR"); // Formata a data no estilo brasileiro
+    const formattedTime = date.toLocaleTimeString("pt-BR"); // Formata a hora no estilo brasileiro
+
+    return `Data: ${formattedDate}, Hora: ${formattedTime}`;
+  }
+
+  // Função para buscar todos os dados no Firestore
+  async function getAllData(): Promise<Sharing[]> {
+    try {
+      const querySnapshot = await getDocs(collection(database, "userActions"));
+
+      const data: Sharing[] = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        name: doc.data().firstName || "",
+        lastName: doc.data().lastName || "",
+        status: doc.data().action || "",
+        email: doc.data().email || "",
+        postagem: doc.data().postagem || "",
+        timestamp: doc.data().timestamp || "", // Mantém o formato original para ordenação
+        userId: doc.data().userId || "",
+      }));
+
+      // Ordenar os dados pela data e hora do timestamp (mais recente primeiro)
+      data.sort((a, b) => {
+        const dateA = new Date(a.timestamp).getTime();
+        const dateB = new Date(b.timestamp).getTime();
+        return dateB - dateA; // Mais recente vem primeiro
+      });
+
+      // Formatar o timestamp para exibição
+      return data.map(item => ({
+        ...item,
+        timestamp: formatFirebaseDate(item.timestamp),
+      }));
+    } catch (error) {
+      console.error("Erro ao buscar todos os dados:", error);
+      return [];
+    }
+  }
 
   // Função para buscar dados no Firestore com base em vários campos
   async function getDataByUsername(username: string): Promise<Sharing[]> {
@@ -31,47 +77,25 @@ export default function ListLinkPage() {
           lastName: doc.data().lastName || "",
           status: doc.data().action || "",
           email: doc.data().email || "",
-          postagem: doc.data().postagem || "",  // Verifique se `postagem` está sendo lido
-          timestamp: doc.data().timestamp || "",
+          postagem: doc.data().postagem || "",
+          timestamp: doc.data().timestamp || "", // Mantém o formato original para ordenação
           userId: doc.data().userId || "",
         }));
 
-      return data;
+      // Ordenar os dados pela data e hora do timestamp (mais recente primeiro)
+      data.sort((a, b) => {
+        const dateA = new Date(a.timestamp).getTime();
+        const dateB = new Date(b.timestamp).getTime();
+        return dateB - dateA; // Mais recente vem primeiro
+      });
+
+      // Formatar o timestamp para exibição
+      return data.map(item => ({
+        ...item,
+        timestamp: formatFirebaseDate(item.timestamp),
+      }));
     } catch (error) {
       console.error("Erro ao buscar dados:", error);
-      return [];
-    }
-  }
-
-  function formatTimestamp(timestamp: string): string {
-    // Converter timestamp para um objeto Date
-    const date = new Date(timestamp);
-
-    // Formatar a data e hora para o formato desejado e no fuso horário de Brasília
-    const formattedDate = format(date, "dd/MM/yyyy HH:mm:ss", { locale: ptBR });
-
-    return formattedDate;
-  }
-
-  // Função para buscar todos os dados no Firestore
-  async function getAllData(): Promise<Sharing[]> {
-    try {
-      const querySnapshot = await getDocs(collection(database, "userActions"));
-
-      const data: Sharing[] = querySnapshot.docs.map(doc => ({
-        id: doc.id,
-        name: doc.data().firstName || "",
-        lastName: doc.data().lastName || "",
-        status: doc.data().action || "",
-        email: doc.data().email || "",
-        postagem: doc.data().postagem || "",  // Verifique se isso está sendo lido
-        timestamp: formatTimestamp(doc.data().timestamp),
-        userId: doc.data().userId || "",
-      }));
-
-      return data;
-    } catch (error) {
-      console.error("Erro ao buscar todos os dados:", error);
       return [];
     }
   }
@@ -103,13 +127,11 @@ export default function ListLinkPage() {
   }, []);
 
   useEffect(() => {
-    // Se o termo de busca estiver vazio, mostrar todos os dados
     if (searchTerm === "") {
       setSearchResults(allData);
     } else {
-      // Caso contrário, filtrar os resultados de acordo com o termo de busca
       const filteredData = allData.filter(item =>
-        `${item.name} ${item.lastName} ${item.status} ${item.postagem}`  // Verifique o campo `postagem` aqui
+        `${item.name} ${item.lastName} ${item.status} ${item.postagem}`
           .toLowerCase()
           .includes(searchTerm.toLowerCase())
       );
