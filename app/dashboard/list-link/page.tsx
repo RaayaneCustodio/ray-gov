@@ -13,25 +13,18 @@ export default function ListLinkPage() {
   const [searchResults, setSearchResults] = useState<Sharing[]>([]);
   const [allData, setAllData] = useState<Sharing[]>([]);
 
-  // Função para formatar a data e hora do Firebase
   function formatFirebaseDate(firebaseDate: string): string {
     if (!firebaseDate) return "Data não disponível";
-
     const date = new Date(firebaseDate);
-
     if (isNaN(date.getTime())) return "Data inválida";
-
-    const formattedDate = date.toLocaleDateString("pt-BR"); // Formata a data no estilo brasileiro
-    const formattedTime = date.toLocaleTimeString("pt-BR"); // Formata a hora no estilo brasileiro
-
+    const formattedDate = date.toLocaleDateString("pt-BR");
+    const formattedTime = date.toLocaleTimeString("pt-BR");
     return `Data: ${formattedDate}, Hora: ${formattedTime}`;
   }
 
-  // Função para buscar todos os dados no Firestore
   async function getAllData(): Promise<Sharing[]> {
     try {
       const querySnapshot = await getDocs(collection(database, "userActions"));
-
       const data: Sharing[] = querySnapshot.docs.map(doc => ({
         id: doc.id,
         name: doc.data().firstName || "",
@@ -39,18 +32,11 @@ export default function ListLinkPage() {
         status: doc.data().action || "",
         email: doc.data().email || "",
         postagem: doc.data().postagem || "",
-        timestamp: doc.data().timestamp || "", // Mantém o formato original para ordenação
+        timestamp: doc.data().timestamp || "",
         userId: doc.data().userId || "",
       }));
 
-      // Ordenar os dados pela data e hora do timestamp (mais recente primeiro)
-      data.sort((a, b) => {
-        const dateA = new Date(a.timestamp).getTime();
-        const dateB = new Date(b.timestamp).getTime();
-        return dateB - dateA; // Mais recente vem primeiro
-      });
-
-      // Formatar o timestamp para exibição
+      data.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
       return data.map(item => ({
         ...item,
         timestamp: formatFirebaseDate(item.timestamp),
@@ -61,11 +47,9 @@ export default function ListLinkPage() {
     }
   }
 
-  // Função para buscar dados no Firestore com base em vários campos
   async function getDataByUsername(username: string): Promise<Sharing[]> {
     try {
       const querySnapshot = await getDocs(collection(database, "userActions"));
-
       const data: Sharing[] = querySnapshot.docs
         .filter(doc => {
           const fullName = `${doc.data().firstName} ${doc.data().lastName}`.toLowerCase();
@@ -78,18 +62,11 @@ export default function ListLinkPage() {
           status: doc.data().action || "",
           email: doc.data().email || "",
           postagem: doc.data().postagem || "",
-          timestamp: doc.data().timestamp || "", // Mantém o formato original para ordenação
+          timestamp: doc.data().timestamp || "",
           userId: doc.data().userId || "",
         }));
 
-      // Ordenar os dados pela data e hora do timestamp (mais recente primeiro)
-      data.sort((a, b) => {
-        const dateA = new Date(a.timestamp).getTime();
-        const dateB = new Date(b.timestamp).getTime();
-        return dateB - dateA; // Mais recente vem primeiro
-      });
-
-      // Formatar o timestamp para exibição
+      data.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
       return data.map(item => ({
         ...item,
         timestamp: formatFirebaseDate(item.timestamp),
@@ -104,11 +81,15 @@ export default function ListLinkPage() {
     const username = event.target.value;
     setSearchTerm(username);
 
-    try {
-      const data = await getDataByUsername(username);
-      setSearchResults(data);
-    } catch (error) {
-      console.error("Erro ao buscar dados:", error);
+    if (username === "") {
+      setSearchResults(allData); // Se a busca estiver vazia, mostra todos os dados
+    } else {
+      try {
+        const data = await getDataByUsername(username);
+        setSearchResults(data);
+      } catch (error) {
+        console.error("Erro ao buscar dados:", error);
+      }
     }
   };
 
@@ -117,7 +98,7 @@ export default function ListLinkPage() {
       try {
         const data = await getAllData();
         setAllData(data);
-        setSearchResults(data);
+        setSearchResults(data); // Preenche a tabela inicial com todos os dados
       } catch (error) {
         console.error("Erro ao buscar todos os dados:", error);
       }
@@ -128,14 +109,7 @@ export default function ListLinkPage() {
 
   useEffect(() => {
     if (searchTerm === "") {
-      setSearchResults(allData);
-    } else {
-      const filteredData = allData.filter(item =>
-        `${item.name} ${item.lastName} ${item.status} ${item.postagem}`
-          .toLowerCase()
-          .includes(searchTerm.toLowerCase())
-      );
-      setSearchResults(filteredData);
+      setSearchResults(allData); // Mostra todos os dados quando a busca está vazia
     }
   }, [searchTerm, allData]);
 

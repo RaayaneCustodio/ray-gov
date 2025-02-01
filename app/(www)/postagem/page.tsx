@@ -1,10 +1,11 @@
 "use client";
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { useEffect, useState } from "react";
+import Head from "next/head";
+import axios from "axios";
 import { useAuth, useUser } from "@clerk/nextjs";
 import { doc, setDoc } from "firebase/firestore";
 import { database } from "#/firebase";
-import Image from 'next/image';
+import Image from "next/image";
 
 interface IFeedItem {
   id: string;
@@ -34,8 +35,8 @@ export default function InstaFeed() {
       const { data } = await axios.get(url);
       setFeedList(data.data);
     } catch (error) {
-      console.error('Erro ao buscar feed do Instagram:', error);
-      setError('Erro ao buscar feed do Instagram.');
+      console.error("Erro ao buscar feed do Instagram:", error);
+      setError("Erro ao buscar feed do Instagram.");
     }
   }
 
@@ -58,11 +59,10 @@ export default function InstaFeed() {
     };
 
     try {
-      // Cria um documento único com um identificador específico da postagem e do usuário
       const userDocRef = doc(database, "userActions", `${user.id}_${item.id}`);
       await setDoc(userDocRef, userData);
       console.log("Informação de compartilhamento salva com sucesso!");
-      window.location.href = item.permalink; // Redireciona para a publicação no Instagram
+      window.location.href = item.permalink;
     } catch (error) {
       console.error("Erro ao salvar a informação de compartilhamento:", error);
       alert("Erro ao salvar a informação de compartilhamento.");
@@ -70,63 +70,76 @@ export default function InstaFeed() {
   };
 
   return (
-    <ul className="grid grid-cols-1 xl:grid-cols-3 gap-y-10 gap-x-6 items-start p-8">
-      {feedList.map(item => (
-        <li key={item.id} className="relative flex flex-col sm:flex-row xl:flex-col items-start">
-          <div className="order-1 sm:ml-6 xl:ml-0">
-            {item.caption && (
-              <div className="prose prose-slate prose-sm text-slate-600">
-                <p>{item.caption}</p>
-              </div>
+    <>
+      {/* Meta Tags Open Graph para exibição da imagem ao compartilhar */}
+      <Head>
+        <title>Meu Instagram Feed</title>
+        <meta property="og:title" content="Confira meu post no Instagram!" />
+        <meta property="og:description" content={feedList[0]?.caption || "Veja esta incrível postagem!"} />
+        <meta property="og:image" content={feedList[0]?.media_url || "https://meusite.com/imagem-padrao.jpg"} />
+        <meta property="og:url" content={feedList[0]?.permalink || "https://meusite.com"} />
+        <meta property="og:type" content="article" />
+        <meta name="twitter:card" content="summary_large_image" />
+      </Head>
+
+      <ul className="grid grid-cols-1 xl:grid-cols-3 gap-y-10 gap-x-6 items-start p-8">
+        {feedList.map(item => (
+          <li key={item.id} className="relative flex flex-col sm:flex-row xl:flex-col items-start">
+            <div className="order-1 sm:ml-6 xl:ml-0">
+              {item.caption && (
+                <div className="prose prose-slate prose-sm text-slate-600">
+                  <p>{item.caption}</p>
+                </div>
+              )}
+              <button
+                className="group inline-flex items-center h-9 rounded-full text-sm font-semibold whitespace-nowrap px-3 focus:outline-none focus:ring-2 bg-slate-100 text-slate-700 hover:bg-slate-200 hover:text-slate-900 focus:ring-slate-500 mt-6"
+                onClick={() => saveUserDataAndRedirect(item)}
+              >
+                Compartilhar
+              </button>
+            </div>
+            {item.media_type === "IMAGE" ? (
+              <Image
+                src={item.media_url}
+                alt={item.caption || ""}
+                layout="responsive"
+                width={640}
+                height={640}
+                className="mb-6 shadow-md rounded-lg bg-slate-50 w-full sm:w-[17rem] sm:mb-0 xl:mb-6 xl:w-full"
+              />
+            ) : item.media_type === "VIDEO" ? (
+              <video
+                controls
+                className="mb-6 shadow-md rounded-lg bg-slate-50 w-full sm:w-[17rem] sm:mb-0 xl:mb-6 xl:w-full"
+              >
+                <source src={item.media_url} type="video/mp4" />
+              </video>
+            ) : (
+              item.children?.map(child => (
+                <div key={child.id} className="w-full">
+                  {child.media_type === "IMAGE" ? (
+                    <Image
+                      src={child.media_url}
+                      alt={child.caption || ""}
+                      layout="responsive"
+                      width={640}
+                      height={640}
+                      className="mb-6 shadow-md rounded-lg bg-slate-50 w-full sm:w-[17rem] sm:mb-0 xl:mb-6 xl:w-full"
+                    />
+                  ) : (
+                    <video
+                      controls
+                      className="mb-6 shadow-md rounded-lg bg-slate-50 w-full sm:w-[17rem] sm:mb-0 xl:mb-6 xl:w-full"
+                    >
+                      <source src={child.media_url} type="video/mp4" />
+                    </video>
+                  )}
+                </div>
+              ))
             )}
-            <button
-              className="group inline-flex items-center h-9 rounded-full text-sm font-semibold whitespace-nowrap px-3 focus:outline-none focus:ring-2 bg-slate-100 text-slate-700 hover:bg-slate-200 hover:text-slate-900 focus:ring-slate-500 mt-6"
-              onClick={() => saveUserDataAndRedirect(item)}
-            >
-              Compartilhar
-            </button>
-          </div>
-          {item.media_type === "IMAGE" ? (
-            <Image
-              src={item.media_url}
-              alt={item.caption || ""}
-              layout="responsive"
-              width={640}
-              height={640}
-              className="mb-6 shadow-md rounded-lg bg-slate-50 w-full sm:w-[17rem] sm:mb-0 xl:mb-6 xl:w-full"
-            />
-          ) : item.media_type === "VIDEO" ? (
-            <video
-              controls
-              className="mb-6 shadow-md rounded-lg bg-slate-50 w-full sm:w-[17rem] sm:mb-0 xl:mb-6 xl:w-full"
-            >
-              <source src={item.media_url} type="video/mp4" />
-            </video>
-          ) : (
-            item.children?.map(child => (
-              <div key={child.id} className="w-full">
-                {child.media_type === "IMAGE" ? (
-                  <Image
-                    src={child.media_url}
-                    alt={child.caption || ""}
-                    layout="responsive"
-                    width={640}
-                    height={640}
-                    className="mb-6 shadow-md rounded-lg bg-slate-50 w-full sm:w-[17rem] sm:mb-0 xl:mb-6 xl:w-full"
-                  />
-                ) : (
-                  <video
-                    controls
-                    className="mb-6 shadow-md rounded-lg bg-slate-50 w-full sm:w-[17rem] sm:mb-0 xl:mb-6 xl:w-full"
-                  >
-                    <source src={child.media_url} type="video/mp4" />
-                  </video>
-                )}
-              </div>
-            ))
-          )}
-        </li>
-      ))}
-    </ul>
+          </li>
+        ))}
+      </ul>
+    </>
   );
 }
