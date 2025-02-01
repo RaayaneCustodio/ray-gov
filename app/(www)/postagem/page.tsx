@@ -69,15 +69,18 @@ export default function InstaFeed() {
     }
   };
 
+  // Verifica se há postagens no feed
+  const latestPost = feedList[0];  // O primeiro item da lista é o mais recente.
+
   return (
     <>
       {/* Meta Tags Open Graph para exibição da imagem ao compartilhar */}
       <Head>
         <title>Meu Instagram Feed</title>
-        <meta property="og:title" content="Confira meu post no Instagram!" />
-        <meta property="og:description" content={feedList[0]?.caption || "Veja esta incrível postagem!"} />
-        <meta property="og:image" content={feedList[0]?.media_url || "https://meusite.com/imagem-padrao.jpg"} />
-        <meta property="og:url" content={feedList[0]?.permalink || "https://meusite.com"} />
+        <meta property="og:title" content={latestPost?.caption || "Confira meu post no Instagram!"} />
+        <meta property="og:description" content={latestPost?.caption || "Veja esta incrível postagem!"} />
+        <meta property="og:image" content={latestPost?.media_url || "https://meusite.com/imagem-padrao.jpg"} />
+        <meta property="og:url" content={latestPost?.permalink || "https://meusite.com"} />
         <meta property="og:type" content="article" />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
